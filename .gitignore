@@ -1,4 +1,8 @@
+# From MRCS
 build/
 install/
 log/
 *.swp
+
+# Ignore Draw IO backup files
+*.drawio.bkp
