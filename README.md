@@ -1,6 +1,6 @@
-# RoverControlSystem (RCS)
+# Rover Control System (RCS)
 
-## :warning: EXPERIMENTAL :warning: All contents of this repository are experimental and subject to change
+## :warning: This is experimental! All contents are subject to frequent change. :warning:
 
 The Rover Control System (RCS) is a system that allows high-level systems to operate the rover without dealing with specific details of how the rover works.
 RCS facilitates communication between two types of entities: **components** and **systems**.
