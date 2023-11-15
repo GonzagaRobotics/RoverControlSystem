@@ -11,6 +11,8 @@ RCS is designed with three major goals in mind
 - **Reliability**: RCS can withstand and recover from unforeseen challenges, such as network outages or component failures, while maintaining consistent operation as a whole.
 - **Simplicity**: RCS has little to no overhead and focuses on the movement of data between components and systems.
 
+Technical Specifications for RCS can be found [here](./docs/tech_specs.md).
+
 ## Quick Start
 
 Once you have cloned the repository, you can run the following commands to start RCS:
