@@ -1,8 +1,8 @@
-# From MRCS
+# ROS Generated Files
 build/
 install/
 log/
 *.swp
 
-# Ignore Draw IO backup files
+# Draw IO backup files
 *.drawio.bkp

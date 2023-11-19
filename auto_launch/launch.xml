@@ -1,6 +1,11 @@
 <launch>
     <!-- Start Rorsbridge on port 9090 -->
-    <include file="$(find rosbridge_server)/launch/rosbridge_websocket_launch.xml" > 
+    <include file="$(find-pkg-share rosbridge_server)/launch/rosbridge_websocket_launch.xml" > 
         <arg name="port" value="9090"/>
      </include>
+
+     <!-- RCS Core -->
+     <node pkg="rcs_core" exec="core"/>
+
+     <node pkg="rcs_core" exec="tester"/>
 </launch>

@@ -1,0 +1,15 @@
+// Allow VSCode to get type hints from ROS
+{
+  "python.autoComplete.extraPaths": [
+    "/opt/ros/humble/bin",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib"
+  ],
+  "python.analysis.extraPaths": [
+    "/opt/ros/humble/bin",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib"
+  ]
+}

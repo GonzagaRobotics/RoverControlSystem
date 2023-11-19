@@ -15,11 +15,13 @@ setup(
     zip_safe=True,
     maintainer='damon',
     maintainer_email='57426668+BruhSoundEffectNumber2@users.noreply.github.com',
-    description='Core systems for RCS.',
+    description='Core systems for Rover Control System.',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'core = rcs_core.core:main',
+            'tester = rcs_core.tester:main'
         ],
     },
 )
