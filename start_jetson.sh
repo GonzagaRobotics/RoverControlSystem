@@ -1,2 +1,2 @@
-docker compose -f ./docker_scripts/jetson/docker-compose.yml up
-docker exec -it jetson-ros_echo-1 bash
+sudo docker compose -f ./docker_scripts/jetson/docker-compose.yml up -d
+sudo docker exec -it jetson-ros_echo-1 bash

@@ -6,6 +6,4 @@
 
      <!-- RCS Core -->
      <node pkg="rcs_core" exec="core"/>
-
-     <node pkg="rcs_core" exec="tester"/>
 </launch>

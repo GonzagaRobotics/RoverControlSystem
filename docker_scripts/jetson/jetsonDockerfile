@@ -33,7 +33,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt install ros-humble-ros-base -y 
 
 # RQT
-RUN apt install ~nros-humble-rqt* -y
+# RUN apt install ~nros-humble-rqt* -y
 
 # Rosbridge
 RUN apt install ros-humble-rosbridge-suite -y
@@ -42,4 +42,4 @@ RUN apt install ros-humble-rosbridge-suite -y
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 RUN source ~/.bashrc
 
-ENTRYPOINT ["docker_scripts/for_jetson/ros_entrypoint.sh"]
+ENTRYPOINT ["docker_scripts/jetson/ros_entrypoint.sh"]
