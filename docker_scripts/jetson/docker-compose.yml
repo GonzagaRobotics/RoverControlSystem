@@ -1,12 +1,12 @@
 version: "2"
 
 services:
-  # micro-ros-agent:
-  #   image: microros/micro-ros-agent:humble
-  #   command: serial --dev /dev/ttyUSB0
-  #   privileged: true
-  #   network_mode: "host"
-  #   pid: "host"
+  micro-ros-agent:
+    image: microros/micro-ros-agent:humble
+    command: serial --dev /dev/ttyUSB0
+    privileged: true
+    network_mode: "host"
+    pid: "host"
   ros_echo:
     build:
       context: ../..
