@@ -5,6 +5,8 @@ services:
     build:
       context: ../..
       dockerfile: docker_scripts/jetson/jetsonDockerfile
-    network_mode: "host"
-    pid: "host"
+    # network_mode: "host"
+    # pid: "host"
+    ports:
+      - "9090:9090"
     command: tail -F anything # will run container forever
