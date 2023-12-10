@@ -1,6 +1,6 @@
-# RoverControlSystem (RCS)
+# Rover Control System (RCS)
 
-## :warning: EXPERIMENTAL :warning: All contents of this repository are experimental and subject to change
+## :warning: This is experimental! All contents are subject to frequent change. :warning:
 
 The Rover Control System (RCS) is a system that allows high-level systems to operate the rover without dealing with specific details of how the rover works.
 RCS facilitates communication between two types of entities: **components** and **systems**.
@@ -11,24 +11,23 @@ RCS is designed with three major goals in mind
 - **Reliability**: RCS can withstand and recover from unforeseen challenges, such as network outages or component failures, while maintaining consistent operation as a whole.
 - **Simplicity**: RCS has little to no overhead and focuses on the movement of data between components and systems.
 
+Technical Specifications for RCS can be found [here](./docs/tech_specs.md).
+
 ## Quick Start
 
-Once you have cloned the repository, you can run the following commands to start RCS:
+Make sure you have docker installed on your system.
 
-```bash
-# While in the root of the repository
+Once you have cloned the repository and are in the root of the repository, you can run one of the following commands to start RCS.
 
-# Build and run the docker image
-start_jetson.sh
+To force a rebuild of the docker image, run `sh start_jetson_fresh.sh`.
 
-# Alternatively, you can force a rebuild of the docker image before running
-start_jetson_fresh.sh
+To use the existing docker image, run `sh start_jetson.sh`.
 
-# Once inside the docker image, launch RCS
-ros2 launch auto_launch/launch.xml
-```
+There are also scripts for a "host" machine for testing purposes.
 
-RCS will now be running on the rover. You can now connect to the rover using the GUI.
+Once inside the docker container, you can run `ros2 launch auto_launch/launch.py` to start RCS.
+
+RCS will now be running on the rover. You can connect to the rover using the GUI.
 
 ## Components
 

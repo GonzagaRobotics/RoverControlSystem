@@ -35,11 +35,24 @@ RUN apt install ros-humble-ros-base -y
 # RQT
 RUN apt install ~nros-humble-rqt* -y
 
+# Rosdep
+RUN apt install python3-rosdep -y
+RUN rosdep init
+RUN rosdep update
+
+# Colcon
+RUN apt install python3-colcon-common-extensions -y
+RUN apt install g++ -y
+
 # Rosbridge
 RUN apt install ros-humble-rosbridge-suite -y
 
 # Setting up more ROS things from the tutorial
-RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+RUN echo "source /opt/ros/humble/setup.bash; source /app/install/local_setup.bash" >> ~/.bashrc
 RUN source ~/.bashrc
 
-ENTRYPOINT ["docker_scripts/for_jetson/ros_entrypoint.sh"]
+# Install dependencies and build the workspace
+RUN rosdep install -i --from-path src --rosdistro humble -y
+RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
+
+ENTRYPOINT ["docker_scripts/jetson/ros_entrypoint.sh"]
