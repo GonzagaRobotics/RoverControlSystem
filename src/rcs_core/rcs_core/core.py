@@ -1,7 +1,8 @@
 import rclpy
-from rclpy.node import Node, Subscription, Timer
+from rclpy.node import Node, Subscription, Publisher, Timer
 from rclpy.clock import Time, Duration
 
+from std_msgs.msg import String
 from rcs_interfaces.msg import Heartbeat
 
 
@@ -10,6 +11,9 @@ GUI_ENTITY_NAME = "rover_gui"
 
 
 class Core(Node):
+    heartbeat_sub: Subscription
+    heartbeat_pub: Publisher
+
     def __init__(self):
         super().__init__(SELF_ENTITY_NAME)
 
@@ -28,27 +32,13 @@ class Core(Node):
 
         self.get_logger().info("RCS Core initialized")
 
-    def heartbeat_received(self, msg: Heartbeat):
-        time_sent = Time(seconds=msg.header.stamp.sec,
-                         nanoseconds=msg.header.stamp.nanosec,
-                         clock_type=self.get_clock().clock_type)
-        time_received = self.get_clock().now()
-
-        # Calculate trip time
-        trip_time = time_received - time_sent
-
-        self.get_logger().info(
-            f"Heartbeat received from GUI after {str(trip_time)}")
-
+    def heartbeat_received(self, receivedMsg: Heartbeat):
         # Send a heartbeat back
-        self.send_hearbeat()
+        sentMsg = Heartbeat()
+        sentMsg.header.stamp = self.get_clock().now().to_msg()
+        sentMsg.entity_name = SELF_ENTITY_NAME
 
-    def send_hearbeat(self):
-        msg = Heartbeat()
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.entity_name = SELF_ENTITY_NAME
-
-        self.heartbeat_pub.publish(msg)
+        self.heartbeat_pub.publish(sentMsg)
 
 
 def main(args=None):
