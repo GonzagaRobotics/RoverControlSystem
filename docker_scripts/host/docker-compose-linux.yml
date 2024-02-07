@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  realsense_ros2:
+    extends:
+      file: docker-compose-realsense-gui.yml
+      service: realsense_ros2
+  robotics:
+    extends:
+      file: docker_compose.yml
+    privileged: true
+    container_name: forhost-robotics-1
+    environment:
+     - DISPLAY=${DISPLAY}
+     - QT_X11_NO_MITSHM=1
+    tty: true
+    volumes:
+      - /dev/:/dev/
+      - ${XDG_RUNTIME_DIR-/tmp/}:/tmp/runtime-root
+    command: tail -F anything

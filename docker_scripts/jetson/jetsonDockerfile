@@ -29,6 +29,31 @@ RUN apt upgrade -y
 # if did not have the line below ros installation would ask for geo location
 ENV DEBIAN_FRONTEND=noninteractive
 
+# REALSENSE
+RUN apt-get update \
+ && apt-get install -y \
+    build-essential \
+    cmake \
+    git-all \
+    software-properties-common \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \
+ && apt-get install -y \
+    ros-humble-librealsense2* \
+    ros-humble-realsense2-* \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update \
+ && apt-get install -y \
+    ros-humble-rviz2 \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    apt-get install -y \
+    ros-humble-desktop \
+    ros-humble-turtlesim && \
+    rm -rf /var/lib/apt/lists/*
 # ROS2 Humble
 RUN apt install ros-humble-ros-base -y 
 

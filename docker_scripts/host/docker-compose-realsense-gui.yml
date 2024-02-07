@@ -1,0 +1,10 @@
+#docker-compose-gui
+version: "3.9"
+services:
+  realsense_ros2:
+    extends:
+      file: ../jetson/docker-compose.yml
+      service: realsense_ros2
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw

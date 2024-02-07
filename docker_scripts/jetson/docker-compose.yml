@@ -16,3 +16,11 @@ services:
     command: tail -F anything # will run container forever
     # depends_on:
     #   - micro-ros-agent
+  realsense_ros2:
+      #target: librealsense
+    tty: true
+    volumes:
+      - /dev:/dev
+    device_cgroup_rules:
+      - 'c 81:* rmw'
+      - 'c 189:* rmw'
