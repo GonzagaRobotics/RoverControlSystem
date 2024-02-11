@@ -10,3 +10,4 @@ services:
     ports:
       - "9090:9090"
     command: tail -F anything # will run container forever
+ 
