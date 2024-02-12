@@ -34,7 +34,6 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # Create .profile and .bash_profile for custom PATH
 RUN echo 'PATH=$PATH:/foo/bar' > ~/.profile && \
     echo 'PATH=$PATH:/hello-world' > ~/.bash_profile
-
 # Add the ROS 2 and Gazebo repository
 RUN apt-get update && \
     wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \

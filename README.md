@@ -1,11 +1,12 @@
 # Rover Control System (RCS)
 
-## :warning: This is experimental! All contents are subject to frequent change. :warning:
+## ⚠️ This is experimental! All contents are subject to frequent change. ⚠️
 
 The Rover Control System (RCS) is a system that allows high-level systems to operate the rover without dealing with specific details of how the rover works.
 RCS facilitates communication between two types of entities: **components** and **systems**.
 
 RCS is designed with three major goals in mind
+
 
 - **Modularity**: RCS is flexible and can be easily upgraded or modified to extend or alter its capabilities. The modification of one part of RCS should not affect the rest.
 - **Reliability**: RCS can withstand and recover from unforeseen challenges, such as network outages or component failures, while maintaining consistent operation as a whole.
