@@ -1,9 +1,14 @@
+ARG ENV_TYPE
+
 FROM ubuntu:latest
 
 WORKDIR /app
 
 # copying all folders
 COPY . .
+
+# Remove existing build, install, and log directories
+RUN rm -rf build install log
 
 # for ROS2
 RUN apt update && apt install locales -y
@@ -30,22 +35,32 @@ RUN apt upgrade -y
 ENV DEBIAN_FRONTEND=noninteractive
 
 # ROS2 Humble
-RUN apt install ros-humble-ros-base -y 
+RUN apt-get install ros-humble-ros-base -y 
 
-# RQT
-RUN apt install ~nros-humble-rqt* -y
+# Tools
+RUN apt-get install -y \
+    python3-rosdep \
+    python3-colcon-common-extensions \
+    g++ \
+    ros-humble-rosbridge-suite
+
+# Realsense
+RUN apt-get update \
+ && apt-get install -y \
+    build-essential \
+    cmake \
+    git-all
+
+RUN apt-get install -y \
+    ros-humble-librealsense2* \
+    ros-humble-realsense2-*
+
+# Install some additional tools for development
+apt-get install -y ros-humble-rviz2 ~nros-humble-rqt*; \
 
 # Rosdep
-RUN apt install python3-rosdep -y
 RUN rosdep init
 RUN rosdep update
-
-# Colcon
-RUN apt install python3-colcon-common-extensions -y
-RUN apt install g++ -y
-
-# Rosbridge
-RUN apt install ros-humble-rosbridge-suite -y
 
 # Setting up more ROS things from the tutorial
 RUN echo "source /opt/ros/humble/setup.bash; source /app/install/local_setup.bash" >> ~/.bashrc

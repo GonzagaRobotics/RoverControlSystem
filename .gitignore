@@ -4,5 +4,8 @@ install/
 log/
 *.swp
 
+# Launch script pycache
+auto_launch/__pycache__/
+
 # Draw IO backup files
 *.drawio.bkp

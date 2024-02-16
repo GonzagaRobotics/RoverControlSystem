@@ -7,12 +7,17 @@ services:
     privileged: true
     network_mode: "host"
     pid: "host"
-  ros_echo:
+  rover_main:
     build:
       context: ../..
       dockerfile: docker_scripts/jetson/jetsonDockerfile
+    tty: true
+    privileged: true
+    volumes:
+      - /dev:/dev
+    device_cgroup_rules:
+      - "c 81:* rmw"
+      - "c 189:* rmw"
     network_mode: "host"
     pid: "host"
-    command: tail -F anything # will run container forever
-    # depends_on:
-    #   - micro-ros-agent
+    command: tail -F anything
