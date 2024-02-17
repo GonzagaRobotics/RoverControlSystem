@@ -58,10 +58,10 @@ RUN apt-get install -y ros-humble-rviz2 ~nros-humble-rqt*
 RUN rosdep init
 RUN rosdep update
 
-# Automatically source humble
+# Automatically source humble and local setup.bash
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+RUN echo "if [ -f /app/ros/install/local_setup.bash ]; then source /app/ros/install/local_setup.bash; fi" >> ~/.bashrc
 # Add some helpful aliases
-RUN echo "alias srcls='source /app/ros/install/local_setup.bash'" >> ~/.bashrc
 RUN echo "alias auto_launch='ros2 launch /app/ros/launch/launch.py'" >> ~/.bashrc
 RUN source ~/.bashrc
 
