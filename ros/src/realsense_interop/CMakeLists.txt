@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(rcs_interfaces)
+project(realsense_interop)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -7,16 +7,10 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
-
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/BandwidthReduction.msg"
-  "msg/ComponentStatus.msg"
-  "msg/Heartbeat.msg"
-  "msg/RemoteSystemInit.msg"
-  DEPENDENCIES std_msgs
-)
+find_package(sensor_msgs REQUIRED)
+find_package(rcs_interfaces REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -29,5 +23,10 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+add_executable(realsense_interop src/main.cpp)
+ament_target_dependencies(realsense_interop rclcpp std_msgs sensor_msgs rcs_interfaces)
+
+install(TARGETS realsense_interop DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
