@@ -38,7 +38,8 @@ RUN apt-get install -y \
     python3-rosdep \
     python3-colcon-common-extensions \
     g++ \
-    ros-humble-rosbridge-suite
+    ros-humble-rosbridge-suite \
+    ros-humble-image-transport-plugins
 
 # Realsense
 RUN apt-get update \

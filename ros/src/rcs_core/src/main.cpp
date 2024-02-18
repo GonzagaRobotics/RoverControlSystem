@@ -77,19 +77,27 @@ private:
         // send the killswitch faster than we should. To mitigate this, we will add time to the last heartbeat time
         // based on the interval and number of fails.
 
-        auto adjustedLastTime = lastHeartbeatTime + Duration::from_seconds(heartbeatInterval * heartbeatFailCount);
-
-        if (currentTime - adjustedLastTime > Duration::from_seconds(heartbeatTimeout))
+        // Trying to find a weird bug in here
+        try
         {
-            RCLCPP_WARN(this->get_logger(), "Heartbeat timeout %d.", ++heartbeatFailCount);
+            auto adjustedLastTime = lastHeartbeatTime + Duration::from_seconds(heartbeatInterval * heartbeatFailCount);
 
-            if (heartbeatFailCount > heartbeatFailLimit)
+            if (currentTime - adjustedLastTime > Duration::from_seconds(heartbeatTimeout))
             {
-                RCLCPP_ERROR(this->get_logger(), "Heartbeat fail limit exceeded. Activating killswitch....");
+                RCLCPP_WARN(this->get_logger(), "Heartbeat timeout %d.", ++heartbeatFailCount);
 
-                sentKillswitch = true;
-                killswitchPublisher->publish(std_msgs::msg::Empty());
+                if (heartbeatFailCount > heartbeatFailLimit)
+                {
+                    RCLCPP_ERROR(this->get_logger(), "Heartbeat fail limit exceeded. Activating killswitch....");
+
+                    sentKillswitch = true;
+                    killswitchPublisher->publish(std_msgs::msg::Empty());
+                }
             }
+        }
+        catch (std::runtime_error &e)
+        {
+            RCLCPP_ERROR(this->get_logger(), "Error checking heartbeat: %s", e.what());
         }
     }
 

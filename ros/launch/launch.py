@@ -29,7 +29,7 @@ def generate_launch_description():
         # Realsense Interop
         Node(
             package='realsense_interop',
-            executable='realsense_interop',
+            executable='realsense_interop'
         ),
         # RCS Core
         Node(

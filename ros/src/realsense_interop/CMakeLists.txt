@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(image_transport REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(rcs_interfaces REQUIRED)
@@ -25,7 +26,7 @@ if(BUILD_TESTING)
 endif()
 
 add_executable(realsense_interop src/main.cpp)
-ament_target_dependencies(realsense_interop rclcpp std_msgs sensor_msgs rcs_interfaces)
+ament_target_dependencies(realsense_interop rclcpp image_transport std_msgs sensor_msgs rcs_interfaces)
 
 install(TARGETS realsense_interop DESTINATION lib/${PROJECT_NAME})
 
