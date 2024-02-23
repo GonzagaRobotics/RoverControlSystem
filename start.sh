@@ -8,9 +8,9 @@ else
 fi
 
 xhost +local:*
-sudo docker compose -f ./docker_scripts/$1/docker-compose.yml up -d $BUILD
+sudo docker compose -f ./docker_scripts/"$1"/docker-compose.yml up -d "$BUILD"
 # If we force build, we should make sure that the ros volume is up to date
 if [ "$BUILD" = "--build" ]; then
-    sh ./update_ros.sh $1
+    sh ./update_ros.sh "$1"
 fi
-sudo docker exec -it $1-rover_main-1 bash
+sudo docker exec -it "$1"-rover_main-1 bash

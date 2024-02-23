@@ -1,5 +1,2 @@
-# Open an SSH connection to the rover and remove the ros directory
-ssh robotics@192.168.0.2 'cd ~/Documents/RoverControlSystem/ && rm -rf ros'
-
-# Copy the ros directory to the rover
-scp -r ros robotics@192.168.0.2:~/Documents/RoverControlSystem/
+# Copy the ros directory to the rover excluding install, log, and build directories and delete the existing ros directory on the rover
+rsync -av --exclude='ros/install' --exclude='ros/log' --exclude='ros/build' --delete ros robotics@192.168.0.2:~/Documents/RoverControlSystem/

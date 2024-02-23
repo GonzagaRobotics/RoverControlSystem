@@ -39,11 +39,13 @@ RUN apt-get install -y \
     python3-colcon-common-extensions \
     g++ \
     ros-humble-rosbridge-suite \
-    ros-humble-image-transport-plugins
+    ros-humble-compressed-image-transport \
+    ros-humble-compressed-depth-image-transport \
+    ros-humble-rviz2 \
+    ~nros-humble-rqt*
 
 # Realsense
-RUN apt-get update \
- && apt-get install -y \
+RUN apt-get install -y \
     build-essential \
     cmake \
     git-all
@@ -51,9 +53,6 @@ RUN apt-get update \
 RUN apt-get install -y \
     ros-humble-librealsense2* \
     ros-humble-realsense2-*
-
-# Install some additional tools for development
-RUN apt-get install -y ros-humble-rviz2 ~nros-humble-rqt*
 
 # Set up rosdep
 RUN rosdep init

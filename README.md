@@ -37,7 +37,9 @@ The primary launch file can be run with the alias `auto_launch`.
 
 When changes are made to the contents of the `ros` directory, you will need to update the volume.
 
-First, make sure the container is running. Then, run:
+Note: If you are deploying new code to the rover, you should run `sh deploy.sh` first. This will copy the latest code to the rover.
+
+First, make sure the container is running (but not doing anything). Then, run:
 
 ```bash
 sh update_ros.sh $TARGET
