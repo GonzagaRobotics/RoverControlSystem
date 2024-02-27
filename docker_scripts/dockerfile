@@ -2,9 +2,6 @@ FROM ubuntu:latest
 
 WORKDIR /app
 
-# Copy everything to the container
-COPY . .
-
 # Setup sources that ROS2 requires
 RUN apt update && apt install locales -y
 RUN locale-gen en_US en_US.UTF-8
@@ -33,26 +30,35 @@ ENV DEBIAN_FRONTEND=noninteractive
 # ROS2 Humble
 RUN apt-get install ros-humble-ros-base -y 
 
-# Tools
+# Core tools
 RUN apt-get install -y \
     python3-rosdep \
     python3-colcon-common-extensions \
     g++ \
     ros-humble-rosbridge-suite \
-    ros-humble-compressed-image-transport \
-    ros-humble-compressed-depth-image-transport \
     ros-humble-rviz2 \
-    ~nros-humble-rqt*
-
-# Realsense
-RUN apt-get install -y \
+    ~nros-humble-rqt* \
     build-essential \
     cmake \
-    git-all
-
-RUN apt-get install -y \
+    git-all \
     ros-humble-librealsense2* \
     ros-humble-realsense2-*
+
+# Other tools
+RUN apt-get install -y \
+    ros-humble-compressed-image-transport \
+    ros-humble-compressed-depth-image-transport
+
+# Install libdatachannel from source
+# RUN git clone https://github.com/paullouisageneau/libdatachannel.git /tmp/libdatachannel
+# RUN cd /tmp/libdatachannel && \
+#     git submodule update --init --recursive --depth 1 && \
+#     cmake -B build -DUSE_GNUTLS=0 -DUSE_NICE=0 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+# RUN cd /tmp/libdatachannel/build && make install
+# RUN rm -rf /tmp/libdatachannel
+
+# Copy everything to the container
+COPY . .
 
 # Set up rosdep
 RUN rosdep init

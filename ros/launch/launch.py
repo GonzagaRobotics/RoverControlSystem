@@ -23,13 +23,16 @@ def generate_launch_description():
                 os.path.join(
                     get_package_share_directory('realsense2_camera'),
                     'launch/rs_launch.py'
-                )
+                ),
             )
         ),
-        # Realsense Interop
+        # # Realsense Interop
         Node(
             package='realsense_interop',
-            executable='realsense_interop'
+            executable='realsense_interop',
+            parameters=[
+                {'realsense_interop.image.jpeg_quality': 15}
+            ]
         ),
         # RCS Core
         Node(

@@ -11,7 +11,10 @@ find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "srv/SharedConfig.srv"
+  "msg/ConfirmStart.msg"
+  "msg/ConfirmStop.msg"
+  "msg/Heartbeat.msg"
+  "msg/Killswitch.msg"
   "action/NavigateTo.action"
   DEPENDENCIES std_msgs
 )

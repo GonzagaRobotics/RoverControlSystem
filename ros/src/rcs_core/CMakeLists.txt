@@ -23,7 +23,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_executable(core src/main.cpp)
+add_executable(core src/Core.h src/Core.cpp src/Main.cpp)
 ament_target_dependencies(core rclcpp std_msgs rcs_interfaces)
 
 install(TARGETS core DESTINATION lib/${PROJECT_NAME})
