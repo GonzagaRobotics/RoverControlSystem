@@ -15,7 +15,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ConfirmStop.msg"
   "msg/Heartbeat.msg"
   "msg/Killswitch.msg"
-  "action/NavigateTo.action"
   DEPENDENCIES std_msgs
 )
 
