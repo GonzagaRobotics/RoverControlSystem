@@ -66,8 +66,7 @@ COPY . .
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 RUN echo "if [ -f /app/ros/install/local_setup.bash ]; then source /app/ros/install/local_setup.bash; fi" >> ~/.bashrc
 # Add some helpful aliases
-RUN echo "alias al='sh /app/ros/launch/launch.sh'" >> ~/.bashrc
-RUN echo "alias al_no_rs='sh /app/ros/launch/launch.sh no_realsense'" >> ~/.bashrc
+RUN echo "alias al='sh /app/ros/launch/launch.sh \$@'" >> ~/.bashrc
 RUN source ~/.bashrc
 
 ENTRYPOINT ["docker_scripts/ros_entrypoint.sh"]
