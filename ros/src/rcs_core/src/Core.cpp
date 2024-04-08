@@ -105,7 +105,7 @@ void Core::sharedSettingsSubscriberCallback(const SharedSettings msg)
     RCLCPP_INFO(this->get_logger(), "Received shared settings.");
 }
 
-void Core::confirmStartSubscriberCallback(const ConfirmStart msg)
+void Core::confirmStartSubscriberCallback(const ConfirmStart)
 {
     // If the core is already active, we don't need to do anything.
     if (active)

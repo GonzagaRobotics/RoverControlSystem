@@ -66,11 +66,11 @@ struct rclcpp::TypeAdapter<ConfirmStart, rcs_interfaces::msg::ConfirmStart>
     using custom_type = ConfirmStart;
     using ros_message_type = rcs_interfaces::msg::ConfirmStart;
 
-    static void convert_to_ros_message(const custom_type &source, ros_message_type &destination)
+    static void convert_to_ros_message(const custom_type &, ros_message_type &)
     {
     }
 
-    static void convert_to_custom(const ros_message_type &source, custom_type &destination)
+    static void convert_to_custom(const ros_message_type &, custom_type &)
     {
     }
 };
@@ -84,11 +84,11 @@ struct rclcpp::TypeAdapter<ConfirmStop, rcs_interfaces::msg::ConfirmStop>
     using custom_type = ConfirmStop;
     using ros_message_type = rcs_interfaces::msg::ConfirmStop;
 
-    static void convert_to_ros_message(const custom_type &source, ros_message_type &destination)
+    static void convert_to_ros_message(const custom_type &, ros_message_type &)
     {
     }
 
-    static void convert_to_custom(const ros_message_type &source, custom_type &destination)
+    static void convert_to_custom(const ros_message_type &, custom_type &)
     {
     }
 };
