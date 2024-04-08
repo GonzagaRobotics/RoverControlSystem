@@ -9,20 +9,21 @@ Core::Core() : Node("rcs_core")
     heartbeatCheckTimer =
         this->create_wall_timer(HEARTBEAT_CHECK_INTERVAL, std::bind(&Core::heartbeatCheckTimerCallback, this));
 
-    killswitchPublisher = this->create_publisher<rcs_interfaces::msg::Killswitch>("/killswitch", 10);
+    killswitchPublisher = this->create_publisher<Killswitch>("/killswitch", 10);
 
-    heartbeatSubscription = this->create_subscription<rcs_interfaces::msg::Heartbeat>(
+    heartbeatSubscription = this->create_subscription<Heartbeat>(
         "/heartbeat/rover", 10, std::bind(&Core::heartbeatSubscriberCallback, this, _1));
 
-    heartbeatPublisher = this->create_publisher<rcs_interfaces::msg::Heartbeat>("/heartbeat/client", 10);
+    heartbeatPublisher = this->create_publisher<Heartbeat>("/heartbeat/client", 10);
 
-    confirmStartSubscription = this->create_subscription<rcs_interfaces::msg::ConfirmStart>(
+    sharedSettingsSubscription = this->create_subscription<SharedSettings>(
+        "/shared_settings", 10, std::bind(&Core::sharedSettingsSubscriberCallback, this, _1));
+
+    confirmStartSubscription = this->create_subscription<ConfirmStart>(
         "/confirm_start", 10, std::bind(&Core::confirmStartSubscriberCallback, this, _1));
 
-    confirmStopSubscription = this->create_subscription<rcs_interfaces::msg::ConfirmStop>(
+    confirmStopSubscription = this->create_subscription<ConfirmStop>(
         "/confirm_stop", 10, std::bind(&Core::confirmStopSubscriberCallback, this, _1));
-
-    RCLCPP_INFO(this->get_logger(), "Core initialized.");
 }
 
 void Core::heartbeatCheckTimerCallback()
@@ -57,15 +58,15 @@ void Core::heartbeatCheckTimerCallback()
         // If the number of timeouts exceeds the limit, we should send the killswitch.
         if (heartbeatTimeoutCount >= heartbeatTimeoutLimit)
         {
-            RCLCPP_WARN(this->get_logger(), "Heartbeat timeout limit exceeded. Sending killswitch.");
+            RCLCPP_WARN(this->get_logger(), "Heartbeat timeout limit hit. Sending killswitch...");
 
-            killswitchPublisher->publish(rcs_interfaces::msg::Killswitch());
+            killswitchPublisher->publish(Killswitch{true});
             active = false;
         }
     }
 }
 
-void Core::heartbeatSubscriberCallback(const rcs_interfaces::msg::Heartbeat::SharedPtr msg)
+void Core::heartbeatSubscriberCallback(const Heartbeat msg)
 {
     // We should only receive heartbeat messages when the core is active.
     if (!active)
@@ -74,29 +75,37 @@ void Core::heartbeatSubscriberCallback(const rcs_interfaces::msg::Heartbeat::Sha
         return;
     }
 
-    // If the received heartbeat message is not the next expected one, we should be concerned, but we don't need
-    // to do anything about it yet.
-    if (msg->id != lastHeartbeatId + 1 && msg->id != 0)
-    {
-        RCLCPP_WARN(this->get_logger(), "The received heartbeat message is not the next expected one.");
-        return;
-    }
-
     // Update the last heartbeat time, the last heartbeat ID, and the heartbeat fail count.
     lastHeartbeatTime = this->get_clock()->now();
-    lastHeartbeatId = msg->id;
     heartbeatTimeoutCount = 0;
 
     // Send a heartbeat message to the heartbeat topic.
     auto publishedMsg = rcs_interfaces::msg::Heartbeat();
     publishedMsg.source = "rover";
     publishedMsg.sent_time = this->get_clock()->now();
-    publishedMsg.id = msg->id;
+    publishedMsg.id = msg.id;
 
     heartbeatPublisher->publish(publishedMsg);
 }
 
-void Core::confirmStartSubscriberCallback(const rcs_interfaces::msg::ConfirmStart::SharedPtr msg)
+void Core::sharedSettingsSubscriberCallback(const SharedSettings msg)
+{
+    // If the core is active, we don't need to do anything.
+    if (active)
+    {
+        RCLCPP_WARN(this->get_logger(), "Received shared settings message when core is already active.");
+        return;
+    }
+
+    // Set our parameters based on the received message.
+    heartbeatInterval = msg.heartbeatInterval;
+    heartbeatTimeout = msg.heartbeatTimeout;
+    heartbeatTimeoutLimit = msg.heartbeatTimeoutLimit;
+
+    RCLCPP_INFO(this->get_logger(), "Received shared settings.");
+}
+
+void Core::confirmStartSubscriberCallback(const ConfirmStart msg)
 {
     // If the core is already active, we don't need to do anything.
     if (active)
@@ -104,11 +113,6 @@ void Core::confirmStartSubscriberCallback(const rcs_interfaces::msg::ConfirmStar
         RCLCPP_WARN(this->get_logger(), "Received confirm start message when core is already active.");
         return;
     }
-
-    // Set our parameters based on the received message.
-    heartbeatInterval = msg->heartbeat_interval;
-    heartbeatTimeout = msg->heartbeat_timeout;
-    heartbeatTimeoutLimit = msg->heartbeat_timeout_limit;
 
     // Update the last heartbeat time to the current time to avoid a potential timeout.
     lastHeartbeatTime = this->get_clock()->now();
@@ -119,7 +123,7 @@ void Core::confirmStartSubscriberCallback(const rcs_interfaces::msg::ConfirmStar
     RCLCPP_INFO(this->get_logger(), "Core is now active.");
 }
 
-void Core::confirmStopSubscriberCallback(const rcs_interfaces::msg::ConfirmStop::SharedPtr)
+void Core::confirmStopSubscriberCallback(const ConfirmStop)
 {
     // If the core is not active, we don't need to do anything.
     if (!active)

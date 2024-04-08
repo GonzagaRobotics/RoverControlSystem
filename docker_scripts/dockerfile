@@ -41,23 +41,24 @@ RUN apt-get install -y \
     ros-humble-compressed-depth-image-transport \
     python3-pip
 
-
 # Node and npm
 RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && apt-get install -y nodejs
 
-# Past this point, the debian repository will be used to install chromium
-# There are conflicts with the Ubuntu repository, so any apt installs are likely to fail
+# We need to install chromium for puppeteer, and only the Debian repo has the one we need
 RUN curl -sSL https://ftp-master.debian.org/keys/release-11.asc | gpg --dearmor > /usr/share/keyrings/debian-archive-keyring.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/debian-archive-keyring.gpg] http://deb.debian.org/debian/ bullseye main" >> /etc/apt/sources.list.d/debian.list
+RUN apt update 
+RUN apt install -y chromium
+# Now we want to remove the Debian repo so it doesn't interfere with the rest of the installation
+RUN rm /etc/apt/sources.list.d/debian.list
 RUN apt update
 
 # Dependencies for our WebRTC implementation
-RUN apt install -y chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 RUN npm install -g express puppeteer ws
 
 # If we want to control the robotic arm using the Jetson
-RUN pip3 install Jetson.GPIO
+RUN pip3 install Jetson.GPIO 
 
 # Copy everything to the container
 COPY . .

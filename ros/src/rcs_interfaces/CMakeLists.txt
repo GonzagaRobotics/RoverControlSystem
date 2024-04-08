@@ -11,12 +11,20 @@ find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/SharedSettings.msg"
   "msg/ConfirmStart.msg"
   "msg/ConfirmStop.msg"
   "msg/Heartbeat.msg"
   "msg/Killswitch.msg"
   DEPENDENCIES std_msgs
 )
+
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+ament_export_include_directories(include)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
